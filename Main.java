@@ -5,7 +5,7 @@ import java.awt.*;
 
 public  class  Main {
     //Запуск
-    //pppp
+    //ttttgit
     public static void main(String[] args) {
         JFrame frame = new JFrame("Shuter");
         frame.setSize(700, 700);
