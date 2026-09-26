@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 
 public class GamePanel extends JPanel implements KeyListener {
