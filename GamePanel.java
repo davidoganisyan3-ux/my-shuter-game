@@ -6,8 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import javax.swing.JOptionPane;
 
 
 public class GamePanel extends JPanel implements KeyListener {
@@ -18,23 +17,32 @@ public class GamePanel extends JPanel implements KeyListener {
     boolean leftKey = false;
     boolean rightKey =  false;
 
-
     boolean gameOver = false;
 
     int allSpawnEnemy = 0;
 
     JButton but = new JButton("Restart");
 
-
+    RepositoryPlayer repositoryPlayer = new RepositoryPlayer();
      Timer time;
+
      Random random = new Random();
 
 
 public void playerDeath(){
-    if(plaer.returnDeath()&&!gameOver){
+    if(player.returnDeath()&&!gameOver){
         time.stop();
         gameOver =true;
         but.setVisible(true);
+
+        String name = JOptionPane.showInputDialog("Введите свое имя:");
+        if(name!=null&&!name.isBlank()){
+        repositoryPlayer.saveScore(name, player.returnScore(),player.returnCoin());
+        }else{
+            name="NAME";
+            repositoryPlayer.saveScore(name, player.returnScore(),player.returnCoin());
+        }
+
         repaint();
     }
 }
@@ -44,23 +52,23 @@ public void playerDeath(){
      }
 
      public void spawn(){
-          plaer = new Player(randomInt(658),randomInt(638));
-         objects.add(plaer);
-          objects.add(new Enemy(randomInt(658),randomInt(638),plaer));
-         objects.add(new Enemy(randomInt(658),randomInt(638),plaer));
-         objects.add(new Enemy(randomInt(658),randomInt(638),plaer));
+          player = new Player(randomInt(658),randomInt(638));
+         objects.add(player);
+          objects.add(new Enemy(randomInt(658),randomInt(638),player));
+         objects.add(new Enemy(randomInt(658),randomInt(638),player));
+         objects.add(new Enemy(randomInt(658),randomInt(638),player));
 
 
      }
 
      public void spawnVoln(){
-         plaer.addScore(100);
+         player.addScore(100);
          allSpawnEnemy++;
          int spawnEnemy;
          spawnEnemy=allSpawnEnemy;
          while (spawnEnemy>0){
              spawnEnemy--;
-             objects.add(new Enemy(randomInt(658),randomInt(638),plaer));
+             objects.add(new Enemy(randomInt(658),randomInt(638),player));
          }
      }
 
@@ -68,7 +76,7 @@ public void playerDeath(){
      public void restart(){
          time.start();
          gameOver = false;
-          plaer.restart(100,100);
+          player.restart(100,100);
          allSpawnEnemy=1;
          but.setVisible(gameOver);
          objects.clear();
@@ -108,7 +116,7 @@ public void playerDeath(){
          }
 
          if(!haveCoin()){
-             objects.add( new Coin(randomInt(658),randomInt(638),plaer));
+             objects.add( new Coin(randomInt(658),randomInt(638),player));
          }
          if(!haveEnemy()){
              spawnVoln();
@@ -121,10 +129,10 @@ public void playerDeath(){
 
 //Игрок
 
-    Player plaer = new Player(100,100);
+    Player player = new Player(100,100);
 
 
-    Coin coin = new Coin(randomInt(658),randomInt(638),plaer);
+    Coin coin = new Coin(randomInt(658),randomInt(638),player);
 
 
 
@@ -146,8 +154,8 @@ public void playerDeath(){
 
     }
 
-    Mech mech = new Mech((int)plaer.returnX(), (int)plaer.returnY(),plaer);
-    Pulya pulya = new Pulya ((int)plaer.returnX()+13,(int)plaer.returnY()   ,plaer.getDirection()) ;
+    Mech mech = new Mech((int)player.returnX(), (int)player.returnY(),player);
+    Pulya pulya = new Pulya ((int)player.returnX()+13,(int)player.returnY()   ,player.getDirection()) ;
 
 
 
@@ -164,25 +172,25 @@ public void playerDeath(){
 
 
         if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-            plaer.kill();
+            player.kill();
 
         }
 
         if(e.getKeyCode()==KeyEvent.VK_SPACE   ){
 
 
-            if(plaer.returnWeapon()==Weapon.MECH&& mech.canAtac){
-            mech = new Mech ( (int) mech.x, (int) mech.y,plaer);
+            if(player.returnWeapon()==Weapon.MECH&& mech.canAtac){
+            mech = new Mech ( (int) mech.x, (int) mech.y,player);
              objects.add(mech);
             }
 
-            else if (plaer.returnWeapon()==Weapon.PULYA) {
+            else if (player.returnWeapon()==Weapon.PULYA) {
 
-                if(plaer.returnTimeFirePulya()<=0){
-                pulya=new Pulya((int) plaer.returnX()+13,(int) plaer.returnY() ,plaer.getDirection());
+                if(player.returnTimeFirePulya()<=0){
+                pulya=new Pulya((int) player.returnX()+13,(int) player.returnY() ,player.getDirection());
                 objects.add(pulya);
 
-                    plaer.settimeFirePulya(30);
+                    player.settimeFirePulya(30);
                 }
             }
         }
@@ -190,27 +198,27 @@ public void playerDeath(){
 
         //СМЕНА ОРУЖИЯ
         if(e.getKeyCode()==KeyEvent.VK_SHIFT){
-             plaer.switchWeapon();
+             player.switchWeapon();
         }
 
         //ДВИЖУХА
         if(e.getKeyCode() == KeyEvent.VK_W){
             upKey = true;
-             plaer.setDirection(Direction.UP);
+             player.setDirection(Direction.UP);
          }
         if(e.getKeyCode() == KeyEvent.VK_S){
             downKey = true;
-            plaer.setDirection(Direction.DOWN);
+            player.setDirection(Direction.DOWN);
          }
         if(e.getKeyCode() == KeyEvent.VK_A){
             leftKey = true;
-            plaer.setDirection(Direction.LEFT);
+            player.setDirection(Direction.LEFT);
          }
         if(e.getKeyCode() == KeyEvent.VK_D){
             rightKey = true;
-            plaer.setDirection(Direction.RIGHT);
+            player.setDirection(Direction.RIGHT);
          }
-        plaer.setMoving(upKey,downKey,leftKey,rightKey);
+        player.setMoving(upKey,downKey,leftKey,rightKey);
 
 
     }
@@ -224,7 +232,7 @@ public void playerDeath(){
         if(e.getKeyCode() == KeyEvent.VK_D)
         {rightKey = false;}
 
-        plaer.setMoving(upKey,downKey,leftKey,rightKey);
+        player.setMoving(upKey,downKey,leftKey,rightKey);
     }
     public void keyTyped(KeyEvent e){}
 
@@ -252,11 +260,11 @@ public void playerDeath(){
 
 
 
-        objects.add(plaer);
+        objects.add(player);
 
-        objects.add(new Enemy(100,0,plaer));
-        objects.add(new Enemy(0,100,plaer));
-        objects.add(new Enemy(50,50,plaer));
+        objects.add(new Enemy(100,0,player));
+        objects.add(new Enemy(0,100,player));
+        objects.add(new Enemy(50,50,player));
        // objects.add(new Enemy(150,0));
 
         objects.add(coin);
@@ -288,14 +296,14 @@ public void playerDeath(){
         if(gameOver){
             g.setColor(Color.RED);
             g. setFont(new Font("Arial" , Font.BOLD,20));
-            g.drawString("Score" + plaer.returnScore(),300,75);
+            g.drawString("Score" + player.returnScore(),300,75);
             g. setFont(new Font("Arial" , Font.BOLD,50));
             g.drawString("Game Over!",200,150);
 
         }
         g.setColor(Color.RED);
         g. setFont(new Font("Arial" , Font.BOLD,20));
-        g.drawString("Score:"+ plaer.returnScore(),0,30);
+        g.drawString("Score:"+ player.returnScore(),0,30);
 
         for(GameObject obj:objects){
             obj.draw(g);

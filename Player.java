@@ -35,7 +35,7 @@ public class Player extends GameObject {
 
     private static final int SPEED = 5;
     private static final int MAX_HP = 3;
-    private static final int INVINSIBILITY_TIME = 15;
+
 
 
     private int hp = MAX_HP;
@@ -138,9 +138,7 @@ public class Player extends GameObject {
         score+=addScore;
     }
 
-    public void addCoins(int addCoins){
-        score+=addCoins;
-    }
+    public void addCoins(int addCoins){coins+=addCoins;}
     public int returnScore(){
         return score;
     }
