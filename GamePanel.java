@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.JOptionPane;
+import java.util.List;
 
 
 public class GamePanel extends JPanel implements KeyListener {
@@ -42,6 +43,8 @@ public void playerDeath(){
             name="NAME";
             repositoryPlayer.saveScore(name, player.returnScore(),player.returnCoin());
         }
+
+        new BestScoresFrame().showText(repositoryPlayer.returnBestPlayers(3));
 
         repaint();
     }
