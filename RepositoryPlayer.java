@@ -10,7 +10,7 @@ import java.util.List;
 public class RepositoryPlayer {
     private static final String URL = "jdbc:postgresql://localhost:5432/shooter_game";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "8911";
+    private static final String PASSWORD = "****";
 
     public void saveScore(String name,int score,int coins){
 
