@@ -8,7 +8,7 @@ public class BestScoresFrame extends  JDialog{
 
 
     public void showText(List<String> entries){
-         StringBuilder  text = new StringBuilder();
+         StringBuilder text = new StringBuilder();
          int place = 1;
          for(String entry:entries){
              text.append(place).append(" .").append(entry).append("\n");
@@ -21,8 +21,12 @@ public class BestScoresFrame extends  JDialog{
     public BestScoresFrame(){
         setTitle("Best players");
         setSize(200,150);
+        setFocusableWindowState(false);
+        setResizable(false);
         textArea.setEditable(false);
         add(textArea);
     }
+
+
 
 }

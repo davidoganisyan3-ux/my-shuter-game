@@ -25,7 +25,10 @@ public class GamePanel extends JPanel implements KeyListener {
     JButton but = new JButton("Restart");
 
     RepositoryPlayer repositoryPlayer = new RepositoryPlayer();
+    PlayerApiClient playerApiClient = new PlayerApiClient();
      Timer time;
+     BestScoresFrame bestScoresFrame = new BestScoresFrame();
+
 
      Random random = new Random();
 
@@ -35,17 +38,12 @@ public void playerDeath(){
         time.stop();
         gameOver =true;
         but.setVisible(true);
-
-        String name = JOptionPane.showInputDialog("Введите свое имя:");
-        if(name!=null&&!name.isBlank()){
-        repositoryPlayer.saveScore(name, player.returnScore(),player.returnCoin());
-        }else{
-            name="NAME";
-            repositoryPlayer.saveScore(name, player.returnScore(),player.returnCoin());
+        savePlayerScore();
+        try {
+            bestScoresFrame.showText(playerApiClient.topPlayersLine());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         }
-
-        new BestScoresFrame().showText(repositoryPlayer.returnBestPlayers(3));
-
         repaint();
     }
 }
@@ -62,6 +60,27 @@ public void playerDeath(){
          objects.add(new Enemy(randomInt(658),randomInt(638),player));
 
 
+     }
+
+     public void savePlayerScore(){
+    if(player.returnScore()>99) {
+        String name = JOptionPane.showInputDialog("Введите свое имя:");
+
+        if (name != null && !name.isBlank()) {
+            try  {
+                playerApiClient.save(name, player.returnScore(), player.returnCoin());
+            }catch (Exception e){
+                System.out.println("Error:" + e.getMessage());
+            }
+        } else {
+            name = "NAME";
+            try  {
+                playerApiClient.save(name, player.returnScore(), player.returnCoin());
+            }catch (Exception e){
+                System.out.println("Error:" + e.getMessage());
+            }
+        }
+    }
      }
 
      public void spawnVoln(){
@@ -179,6 +198,10 @@ public void playerDeath(){
 
         }
 
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+            bestScoresFrame.setVisible(true);
+        }
+
         if(e.getKeyCode()==KeyEvent.VK_SPACE   ){
 
 
@@ -246,6 +269,8 @@ public void playerDeath(){
         setFocusable(true);
         setLayout(null);
 
+
+
 //ОБЩЕЕ ДЛЯ ВСЕХ КНОПОК
         for(JButton bats: buts){
             add(bats);
@@ -299,7 +324,7 @@ public void playerDeath(){
         if(gameOver){
             g.setColor(Color.RED);
             g. setFont(new Font("Arial" , Font.BOLD,20));
-            g.drawString("Score" + player.returnScore(),300,75);
+            g.drawString("Score:" + player.returnScore(),300,75);
             g. setFont(new Font("Arial" , Font.BOLD,50));
             g.drawString("Game Over!",200,150);
 

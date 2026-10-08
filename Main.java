@@ -10,7 +10,7 @@ public  class  Main {
         JFrame frame = new JFrame("Shuter");
         frame.setSize(700, 700);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // frame.setResizable(false);
+        frame.setResizable(false);
         frame.setVisible(true);
 
         GamePanel panel = new GamePanel();

@@ -12,20 +12,20 @@ public class RepositoryPlayer {
     private static final String USER = "postgres";
     private static final String PASSWORD = "8911";
 
-    public void saveScore(String name,int score,int coins){
+    public void saveScore(String name,int score,int coins) {
 
         String sql = "INSERT INTO players(name,score,coins) VALUES(?,?,?)";
 
-        try(Connection connection = DriverManager.getConnection(URL,USER,PASSWORD);
-        PreparedStatement statement = connection.prepareStatement(sql))
-        {
-            statement.setString(1,name);
-            statement.setInt(2,score);
-            statement.setInt(3,coins);
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            statement.executeUpdate();
+                statement.setString(1, name);
+                statement.setInt(2, score);
+                statement.setInt(3, coins);
 
-        }catch(SQLException e){
+                statement.executeUpdate();
+
+        } catch (SQLException e) {
             System.out.println("Error:" + e.getMessage());
         }
 
