@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
     JButton but = new JButton("Restart");
 
-    RepositoryPlayer repositoryPlayer = new RepositoryPlayer();
+
     PlayerApiClient playerApiClient = new PlayerApiClient();
      Timer time;
      BestScoresFrame bestScoresFrame = new BestScoresFrame();
