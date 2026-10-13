@@ -1,8 +1,9 @@
 import java.awt.*;
 
 public class Pulya extends GameObject{
-    private int speed = 4;
+    private final int speed = 4;
     private Direction direction = Direction.UP;
+
     @Override
     public   void update( ){
         if(direction== Direction.UP){
