@@ -7,8 +7,6 @@ public class Player extends GameObject {
         move();
         timeFirePulya--;
 
-
-
         if(timeInvs>=0){
             timeInvs--;
         }

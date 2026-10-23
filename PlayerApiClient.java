@@ -42,13 +42,9 @@ public class PlayerApiClient {
 
     public List<String> topPlayersLine() throws Exception {
 
-        List<String> line = new ArrayList<>();
-
-        for (PlayerScore player : topPlayer()) {
-            line.add(player.getName() + " - " + player.getScore());
-        }
-
-        return line;
+        return topPlayer().stream()
+                .map(player ->player.getName() + "-" + player.getScore())
+                .toList();
 
 
     }
